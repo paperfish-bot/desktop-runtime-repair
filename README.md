@@ -14,12 +14,15 @@
 
 需要 Windows PowerShell 5.1，以及从 Microsoft Store 安装的 `OpenAI.Codex`。无需 API 密钥、额外服务或管理员权限来打开菜单；真正执行 App 修复时，Windows 会按需请求管理员权限。
 
-1. 从 GitHub 的 Releases 下载 `desktop-runtime-repair-v1.0.0.zip`，或使用仓库的 **Code → Download ZIP** 下载源码；解压到一个固定、可写入的位置，例如文档文件夹。
-2. 双击 `Start-Repair.cmd` 打开菜单。打开菜单和查看状态不会自动修复应用。
-3. 若官方 App 无法启动，选 **1**。工具会从本机的官方安装目录复制所需运行环境，并核对文件；完成后尝试重新打开官方 App。
-4. 若只有启动动画出问题，且你已经单独安装了上面链接的动画项目，选 **2**。没有安装动画时，这一项会提示“未安装”，不影响 App 修复。
+1. 从 GitHub 的 [Releases](https://github.com/paperfish-bot/desktop-runtime-repair/releases) 下载最新的 `desktop-runtime-repair-v1.0.1.zip`，或使用仓库的 **Code → Download ZIP** 下载源码；完整解压到一个可写入的文件夹。
+2. 双击 **`Install-Repair.cmd`（一键安装）**。安装程序会把工具复制到当前用户的固定位置，并自动创建带霜璃圆角图标的桌面快捷方式 **“霜璃修复助手”**。安装本身不需要管理员权限，也不执行 App 修复。
+3. 以后双击桌面的 **“霜璃修复助手”** 打开菜单。安装成功后，下载的 ZIP 和解压包可以删除。打开菜单和查看状态不会自动修复应用。
+4. 若官方 App 无法启动，选 **1**。工具会从本机的官方安装目录复制所需运行环境，并核对文件；完成后尝试重新打开官方 App。
+5. 若只有启动动画出问题，且你已经单独安装了上面链接的动画项目，选 **2**。没有安装动画时，这一项会提示“未安装”，不影响 App 修复。
 
-想在桌面创建入口，可右键 `Start-Repair.cmd`，选择“显示更多选项 → 发送到 → 桌面快捷方式”。要使用霜璃圆角图标，右键新建的快捷方式 → 属性 → 更改图标 → 浏览，选择本项目的 `assets\shuangli-icon-rounded.ico`。图标包含 16–256 像素的多种尺寸，适配 Windows 常见显示大小。以后若移动了解压文件夹，请重新创建快捷方式并重新选择图标。
+工具默认安装到 `%LOCALAPPDATA%\Paperfish\DesktopRuntimeRepair`。以后更新时，解压新版本，再运行一次 `Install-Repair.cmd`，程序会更新原安装并保留日志。桌面若已有同名的其他快捷方式，安装程序会停止并提示先改名。
+
+也可以直接双击解压包里的 `Start-Repair.cmd`，以便携方式打开菜单。便携使用时，请保留整个解压文件夹。霜璃图标包含 16–256 像素的多种尺寸，适配 Windows 常见显示大小。
 
 只检查 App 缓存、不执行修复时，在本项目文件夹打开 PowerShell，运行：
 
@@ -30,6 +33,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Repair-ChatGPT.ps1 -Ch
 ## 它会改动什么
 
 - App 修复针对当前 Windows 用户的 `%LOCALAPPDATA%\OpenAI\Codex\runtimes\cua_node`。运行前会定位 Microsoft Store 安装的官方应用，修复时复制其自带文件并逐项校验。
+- 一键安装只部署本修复助手的程序文件、说明和图标，并创建当前用户的桌面快捷方式。重新安装会更新这些程序文件。
 - 真正修复时会关闭正在运行的应用，再尝试重新启动；日志写在项目文件夹的 `Logs`。失败的临时目录可能在严格路径检查后清理。
 - 不删除聊天记录、登录信息或应用设置，不修改官方应用的安装包，也不从第三方网站下载安装文件。
 - 菜单中的动画修复只会调用对方电脑上**已经安装**的动画修复脚本。本仓库没有包含动画项目的代码、素材或许可证。
@@ -46,7 +50,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Repair-ChatGPT.ps1 -Ch
 
 **需要安装 VS Code、Python 或额外的服务吗？**
 
-不需要。解压后双击 `Start-Repair.cmd` 即可打开菜单，工具使用 Windows 自带的 PowerShell。
+不需要。解压后双击 `Install-Repair.cmd` 完成安装，之后从桌面图标打开；也可直接运行 `Start-Repair.cmd`。工具使用 Windows 自带的 PowerShell。
 
 **没安装启动动画，能使用吗？**
 
@@ -58,7 +62,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Repair-ChatGPT.ps1 -Ch
 
 **不想使用了，怎么移除？**
 
-关闭修复助手后，删除解压文件夹及自己创建的桌面快捷方式即可。这个修复助手没有安装常驻服务或登录启动项；单独安装的启动动画需要按动画项目的说明停用。
+关闭修复助手后，按 `Win+R`，输入 `%LOCALAPPDATA%\Paperfish`，删除里面的 `DesktopRuntimeRepair` 文件夹，再删除桌面上的“霜璃修复助手”快捷方式。便携使用时，删除自己的解压文件夹及快捷方式即可。这个修复助手没有安装常驻服务或登录启动项；单独安装的启动动画需要按动画项目的说明停用。
 
 ## 许可
 

@@ -1,5 +1,6 @@
 Logs/
 config.json
+install-state.json
 *.lnk
 ChatGPT.ico
 *.zip
